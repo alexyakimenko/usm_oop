@@ -24,6 +24,10 @@ std::string Building::getAddress() {
   return this->address;
 }
 
+std::string Building::getRegNum() {
+  return this->regNum;
+}
+
 int Building::getRoomsNum() {
   return this->roomsNum;
 }
@@ -34,4 +38,14 @@ int Building::getFloorsNum() {
 
 int Building::getApartmentsNum() {
   return this->apartmentsNum;
+}
+
+void Building::print() {
+  std::cout << "{" << std::endl;
+  std::cout << "\taddress: " << this->getAddress() << std::endl; 
+  std::cout << "\tregNum: " << this->getRegNum() << std::endl;
+  std::cout << "\tfloorsNum: " << this->getFloorsNum() << std::endl;
+  std::cout << "\tapartmentsNum: " << this->getApartmentsNum() << std::endl;
+  std::cout << "\troomsNum: " << this->getRoomsNum() << std::endl;
+  std::cout << "}" << std::endl;
 }

@@ -2,38 +2,10 @@
 #include <vector>
 
 #include "Building.h"
+#include "Menu.h"
 
 using namespace std;
 
-class Menu {
-private:
-  vector<string> options;
-
-public:
-  Menu(string* options, int len) {
-    vector<string> newVec(options, options + len);
-    this->options = newVec;
-  }
-
-  ~Menu() {
-    options.clear();
-  }
-
-  void setOptions(vector<string> newOptions) {
-    options = newOptions;
-  }
-
-  void addOption(string option) {
-    options.push_back(option);
-  }
-
-  void draw() {
-    cout << "Make Your Choice" << endl;
-    for(int i = 0; i < options.size(); i++) {
-      cout << i + 1 << ": " << options[i] << endl;
-    }
-  }
-};
 
 class App {
 private:
@@ -53,17 +25,8 @@ private:
     for(Building building : buildings) {
       if(building.getApartmentsNum() <= apartmentsNum) continue;
 
-      printBuilding(building);
+      building.print();
     }
-  }
-
-  void printBuilding(Building building) {
-      cout << "{" << endl;
-      cout << "\taddress: " << building.getAddress() << endl; 
-      cout << "\tfloorsNum: " << building.getFloorsNum() << endl;
-      cout << "\tapartmentsNum: " << building.getApartmentsNum() << endl;
-      cout << "\troomsNum: " << building.getRoomsNum() << endl;
-      cout << "}" << endl;
   }
   
   void deleteByAddress(string address) {
@@ -73,6 +36,23 @@ private:
       buildings.erase(buildings.begin() + i);
     }
   }
+
+  void showByRegNum(string regNum) {
+    for(Building building : buildings) {
+      if(building.getRegNum() != regNum) continue;
+
+      building.print();
+    }
+  }
+
+  static bool compare(Building& b1, Building& b2) {
+      return b1.getRoomsNum() > b2.getFloorsNum();
+  }
+
+  void sortByFloors() {
+    sort(buildings.begin(), buildings.end(), compare);
+  }
+
 public:
   bool shouldClose = false;
 
@@ -98,7 +78,7 @@ public:
 
   void processShowBuildings() {
     for(Building building : buildings) {
-      printBuilding(building);
+      building.print();
     }
   }
 
@@ -118,6 +98,18 @@ public:
     deleteByAddress(address);
   }
 
+  void processShowByRegNum() {
+    string regNum;
+    cout << "Write the folowing info:" << endl;
+    cout << "Registration Number: ";
+    getline(cin>>ws, regNum);
+    showByRegNum(regNum);
+  }
+
+  void processSortByFloors() {
+    sortByFloors();
+  }
+
   void requestChoice() {
     short choice;
     cin >> choice;
@@ -135,14 +127,15 @@ public:
         processShowBuildings(); 
       }; break;
       case 2: {
-
+        cout << "Sorting list of Buildings..." << endl;
+        processSortByFloors();
       }; break;
       case 3: {
         cout << "Showing buildings with apartments greater than X" << endl;
         processShowByApps();
       }; break;
       case 4: {
-
+        
       }; break;
       case 5: {
         cout << "Deleting building ..." << endl;
@@ -152,7 +145,8 @@ public:
 
       }; break;
       case 7: {
-
+        cout << "Showing by Registration Number" << endl;
+        processShowByRegNum();
       }; break;
       default: {
         shouldClose = true;

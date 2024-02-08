@@ -15,4 +15,6 @@ public:
   int getRoomsNum();
   int getApartmentsNum();
   std::string getAddress();
+  std::string getRegNum();
+  void print();
 };
