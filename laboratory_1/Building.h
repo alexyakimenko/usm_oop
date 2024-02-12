@@ -1,5 +1,4 @@
-#ifndef BUILDING_H
-#define BUILDING_H
+#pragma once
 
 #include <iostream>
 
@@ -63,4 +62,3 @@ public:
   }
 };
 
-#endif // BUILDING_H!

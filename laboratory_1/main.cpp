@@ -13,7 +13,7 @@ int main() {
     "Show list of buildings",
     "Sort list of buildings",
     "Show buildings with apps greater than x",
-    "<to be clarified>",
+    "Add to first position",
     "Delete by address",
     "Write down buildings",
     "Show by regNum"

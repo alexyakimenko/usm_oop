@@ -1,7 +1,7 @@
-#ifndef APP_H
-#define APP_H
+#pragma once
 
 #include <vector>
+#include <fstream>
 
 #include "Building.h"
 
@@ -12,13 +12,13 @@ private:
   short choice;
   std::vector<Building> buildings;
 
-  void addBuilding(Building building) {
-    buildings.push_back(building);
-  }
+  void addBuilding(Building building, bool insert = false) {
+    if(!insert) {
+      buildings.push_back(building);
+      return;
+    }
 
-  void addBuilding(int floorsNum, int roomsNum, int apartmentsNum, std::string address, std::string regNum) {
-    Building building(floorsNum, roomsNum, apartmentsNum, address, regNum);
-    buildings.push_back(building);
+    buildings.insert(buildings.begin(), building);
   }
 
   void showByApps(int apartmentsNum) {
@@ -46,12 +46,40 @@ private:
   }
 
   void sortByFloors() {
+    for(int i = 0; i < buildings.size()-1; i++) {
+      int min_i = i;
+      for(int j = i+1; j < buildings.size(); j++) {
+        if(buildings[j].getFloorsNum() < buildings[min_i].getFloorsNum()) {
+          min_i = j; 
+        }
+      }
+      swap(buildings[i], buildings[min_i]);
+    }
+  }
+
+  void writeFile() {
+    ofstream output;
+
+    output.open("buildings.out");
+
+    for(Building building : buildings) {
+      output << "{" << endl;
+      output << "\taddress: " << building.getAddress() << endl;
+      output << "\tregNum: " << building.getRegNum() << endl;
+      output << "\tfloorsNum: " << building.getFloorsNum() << endl;
+      output << "\troomsNum: " << building.getRoomsNum() << endl;
+      output << "\tapartmentsNum: " << building.getApartmentsNum() << endl;
+      output << "}" << endl;
+    }
+    
+    output.close();
+    cout << "File was successfully created" << endl;
   }
 
 public:
   bool shouldClose = false;
 
-  void processAddBuilding() {
+  void processAddBuilding(bool insert = false) {
     int floorsNum, roomsNum, apartmentsNum;
     string address, regNum;
 
@@ -67,8 +95,9 @@ public:
     cout << "Registration number: \n";
     getline(cin>>ws, regNum, '\n');
 
+    Building building(floorsNum, roomsNum, apartmentsNum, address, regNum);
 
-    addBuilding(floorsNum, roomsNum, apartmentsNum, address, regNum);
+    addBuilding(building, insert);
   }
 
   void processShowBuildings() {
@@ -105,6 +134,10 @@ public:
     sortByFloors();
   }
 
+  void processWriteFile() {
+    writeFile();
+  }
+
   void requestChoice() {
     short choice;
     cin >> choice;
@@ -126,18 +159,20 @@ public:
         processSortByFloors();
       }; break;
       case 3: {
-        cout << "Showing buildings with apartments greater than X" << endl;
+        cout << "showing buildings with apartments greater than X" << endl;
         processShowByApps();
       }; break;
       case 4: {
-        
+        cout << "Inserting Building" << endl;
+        processAddBuilding(true);
       }; break;
       case 5: {
         cout << "Deleting building ..." << endl;
         processDeleteByAddress();
       }; break;
       case 6: {
-
+        cout << "Writing down Buildings" << endl;
+        processWriteFile();
       }; break;
       case 7: {
         cout << "Showing by Registration Number" << endl;
@@ -151,4 +186,3 @@ public:
   }
 };
 
-#endif // !APP_H

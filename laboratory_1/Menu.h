@@ -1,5 +1,4 @@
-#ifndef MENU_H
-#define MENU_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -33,4 +32,3 @@ public:
   };
 };
 
-#endif // !MENU_H
