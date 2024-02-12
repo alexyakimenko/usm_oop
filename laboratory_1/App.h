@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "Building.h"
+#include "Menu.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ class App {
 private:
   short choice;
   std::vector<Building> buildings;
+  Menu menu;
 
   void addBuilding(Building building, bool insert = false) {
     if(!insert) {
@@ -78,6 +80,14 @@ private:
 
 public:
   bool shouldClose = false;
+
+  App(Menu menu) {
+    this->menu = menu; 
+  }
+
+  Menu getMenu() {
+    return menu; 
+  }
 
   void processAddBuilding(bool insert = false) {
     int floorsNum, roomsNum, apartmentsNum;

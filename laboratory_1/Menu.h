@@ -8,6 +8,8 @@ private:
   std::vector<std::string> options;
 
 public:
+  Menu() {}
+
   Menu(std::string* options, int len) {
     std::vector<std::string> newVec(options, options + len);
     this->options = newVec;

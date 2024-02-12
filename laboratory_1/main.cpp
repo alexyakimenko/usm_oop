@@ -20,10 +20,10 @@ int main() {
   };
 
   Menu menu(menuOptions, 8);
-  App app;
+  App app(menu);
   
   while(!app.shouldClose) {
-    menu.draw();
+    app.getMenu().draw();
     app.requestChoice();
     app.processChoice();
   }
